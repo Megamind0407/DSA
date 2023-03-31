@@ -1,0 +1,125 @@
+#include<bits/stdc++.h>
+using namespace std;
+class Node{
+	public:
+		string key;
+		string mean;
+		Node* left;
+		Node* right;
+		Node(string k,string m){
+			key=k;
+			mean=m;
+			left=NULL;
+			right=NULL;
+			
+		}
+};
+
+class BST{
+	public:
+		Node* insertToBST(Node* root,string k,string m){
+			if(root == NULL){
+				root = new Node(k,m);
+				return root;
+			}
+			if(k > root->key){
+				root->right=insertToBST(root->right,k,m);
+				return root;
+			}
+			else{
+				root->left=insertToBST(root->left,k,m);
+				return root;
+			}
+		}
+		void create(Node*&root){
+			string key;
+			string mean;
+			cout<<"Enter keyword & meaning in  BST(if not enter --) :"<<endl;
+			cin >> key >> mean;
+			while (key!="--" && mean!="--") {
+				root = insertToBST(root,key,mean);
+				cin >> key >> mean;
+			}
+		}
+		void inOrder(Node* root){
+			if(root == NULL)
+			{
+				return;
+			}
+			inOrder(root->left);
+			cout<<root->key<<":"<<root->mean<<endl;
+			inOrder(root->right);
+		}
+		Node* search(Node* root,string key){
+		
+        	if (root == NULL || root->key == key)
+            	return root;
+   
+        	if (root->key < key)
+            	return search(root->right, key);
+ 
+        	else
+            	return search(root->left, key);
+    	}
+    	void update(Node* root)
+    	{
+    		Node* p;
+    		string k;
+    		string m;
+    		string newMean;
+    		cout<<"Enter key to update :";
+    		cin>>k;
+    		p=search(root,k);
+			if(p==NULL)
+			{
+				cout<<"Element not found";
+			}
+			else{
+				cout<<"Element found : "<<p->key<<":"<<p->mean;
+				cout<<"\nEnter new meaning :";
+				cin>>newMean;
+				p->mean=newMean;
+			}
+		}
+};
+int main()
+{
+	BST b;
+	int ch;
+	string key;
+	Node* root=NULL;
+	Node* p;
+	cout<<"1.Create\n2.Inorder\n3.Search key\n4.Update keyword";
+	while(1)
+	{
+		cout<<"\n\nEnter choice :";
+		cin>>ch;
+		switch(ch)
+		{
+			case 1:
+				b.create(root);
+				break;
+			case 2:
+				b.inOrder(root);
+				break;
+			case 3:
+				cout<<"Enter keyword to be search(if not enter --) :";
+				cin>>key;
+				if(p==NULL)
+				{
+					cout<<"Element not found";
+				}
+				else{
+					cout<<"Element found : "<<p->key;
+				}
+				
+				break;
+			case 4:
+				b.update(root);
+				break;
+			case 5:
+				exit(1);
+				
+		}
+	}
+}
