@@ -2,43 +2,38 @@
 using namespace std;
 class Node{
 	public:
-		string key;
-		string mean;
+		int data;
 		Node* left;
 		Node* right;
-		Node(string k,string m){
-			key=k;
-			mean=m;
+		Node(int d){
+			data=d;
 			left=NULL;
 			right=NULL;
-			
 		}
 };
-
 class BST{
 	public:
-		Node* insertToBST(Node* root,string k,string m){
+		Node* insertToBST(Node* root,int d){
 			if(root == NULL){
-				root = new Node(k,m);
+				root = new Node(d);
 				return root;
 			}
-			if(k > root->data){
-				root->right=insertToBST(root->right,k);
+			if(d > root->data){
+				root->right=insertToBST(root->right,d);
 				return root;
 			}
 			else{
-				root->left=insertToBST(root->left,k);
+				root->left=insertToBST(root->left,d);
 				return root;
 			}
 		}
 		void create(Node*&root){
-			string key;
-			string mean;
+			int key;
 			cout<<"Enter element in  BST(if not enter -1) :"<<" ";
-			cin >> key >> mean;
+			cin >> key;
 			while (key!=-1) {
-				root = insertToBST(root,key,mean);
-				cin >> key >> mean;
+				root = insertToBST(root,key);
+				cin >> key;
 			}
 		}
 		void inOrder(Node* root){
@@ -47,41 +42,41 @@ class BST{
 				return;
 			}
 			inOrder(root->left);
-			cout<<root->key<<" ";
+			cout<<root->data<<" ";
 			inOrder(root->right);
 		}
 		Node* search(Node* root,int key){
 		
-        if (root == NULL || root->data == key)
-            return root;
+        	if (root == NULL || root->data == key)
+            	return root;
    
-        if (root->data < key)
+        	if (root->data < key)
         
-            return search(root->right, key);
+            	return search(root->right, key);
  
-        else
-            return search(root->left, key);
-    	}
+        	else
+            	return search(root->left, key);
+    		}
     	
     	
-    	void minvalue(Node* root)
-    	{
-    		while(root->left != NULL)
+    		void minvalue(Node* root)
     		{
+    			while(root->left != NULL)
+    			{
     			root=root->left;
 			}
 			cout<<"Min value ="<<root->data<<" ";
 		}
 		
 		void maxvalue(Node* root)
-    	{
-    		while(root->right != NULL)
     		{
+    			while(root->right != NULL)
+    			{
     			root=root->right;
 			}
 			cout<<"Max value ="<<root->data<<" ";
 		}
-		Node* swap(Node* root)
+		Node* mirror(Node* root)
 		{
 			if(root == NULL)
 			{
@@ -90,23 +85,24 @@ class BST{
 			else
 			{
 				Node* temp;
-				swap(root->left);
-				swap(root->right);
+				mirror(root->left);
+				mirror(root->right);
 				temp = root->left;
 				root->left=root->right;
 				root->right=temp;
 			}
 		}
-		void height(Node* root)
+		int height(Node* root)
 		{
+
 			if(root == NULL)
 			{
-				return;
+				return 0;
 			}
 			else
 			{
-				int lh=1 + height(root->left);
-				int rh=1 + height(root->right);
+				int lh = 1 + height(root->left);
+				int rh = 1 + height(root->right);
 				
 				if(lh > rh)
 				{
@@ -118,7 +114,6 @@ class BST{
 			}
 		}
 };
-
 int main(){
 	BST b;
 	Node* root=NULL;
@@ -129,44 +124,39 @@ int main(){
 	{
 		cout<<"\nEnter choice :";
 		cin>>ch;
-		if(ch==1)
-		{
-			b.create(root);
-		}
-		else if(ch==2){
-			b.inOrder(root);
-		}
-		else if(ch==3){
-			cout<<"Enter element to be search :";
-			cin>>key;
-			p=b.search(root,key);
-			if(p==NULL)
-			{
-				cout<<"Element not found";
-			}
-			else
-			{
-				cout<<"Element found :"<<p->data;
-			}
-		}
-		else if(ch==4){
-			
-			b.minvalue(root);
-		}
-		else if(ch==5)
-		{
-			b.maxvalue(root);
-		}
-		else if(ch==6)
-		{
-			b.swap(root);
-		}
-		else if(ch==7){
-			
-		}
-		else{
-			exit(1);
-		}
+		switch(ch)
+        {
+            case 1:
+                b.create(root);
+                break;
+            case 2:
+                b.inOrder(root);
+                break;
+            case 3:
+                cout<<"Enter key to be search(if not enter -1) :";
+                cin>>key;
+                p=b.search(root,key);
+                if(p==NULL)
+                    cout<<"Element not found";
+                else
+                    cout<<"Element found :"<<p->data;
+                break;
+            case 4:
+                b.minvalue(root);
+                break;
+            case 5:
+                b.maxvalue(root);
+                break;
+            case 6:
+                b.mirror(root);
+                break;
+            case 7:
+                cout<<"Height of the tree :"<<b.height(root);
+                break;
+            case 8:
+                exit(1);
+
+        }
 	}
 	return 0;
 }
