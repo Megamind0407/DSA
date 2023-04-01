@@ -50,6 +50,7 @@ class BST{
 			cout<<root->key<<":"<<root->mean<<endl;
 			inOrder(root->right);
 		}
+		
 		Node* search(Node* root,string key){
 		
         	if (root == NULL || root->key == key)
@@ -60,16 +61,16 @@ class BST{
  
         	else
             	return search(root->left, key);
-    	}
-    	void update(Node* root)
-    	{
-    		Node* p;
-    		string k;
-    		string m;
-    		string newMean;
-    		cout<<"Enter key to update :";
-    		cin>>k;
-    		p=search(root,k);
+    		}
+    		void update(Node* root)
+    		{
+			Node* p;
+			string k;
+			string m;
+			string newMean;
+			cout<<"Enter key to update :";
+			cin>>k;
+			p=search(root,k);
 			if(p==NULL)
 			{
 				cout<<"Element not found";
