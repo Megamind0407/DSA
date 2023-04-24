@@ -14,7 +14,6 @@ class Node{
 			
 		}
 };
-
 class BST{
 	public:
 		Node* insertToBST(Node* root,string k,string m){
@@ -93,7 +92,7 @@ int main()
 	cout<<"1.Create\n2.Inorder\n3.Search key\n4.Update keyword";
 	while(1)
 	{
-		cout<<"\n\nEnter choice :";
+		cout<<"\n\nEnter choice :"; 
 		cin>>ch;
 		switch(ch)
 		{
@@ -106,6 +105,7 @@ int main()
 			case 3:
 				cout<<"Enter keyword to be search(if not enter --) :";
 				cin>>key;
+				p=b.search(root,key);
 				if(p==NULL)
 				{
 					cout<<"Element not found";
@@ -113,7 +113,6 @@ int main()
 				else{
 					cout<<"Element found : "<<p->key;
 				}
-				
 				break;
 			case 4:
 				b.update(root);
