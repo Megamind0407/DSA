@@ -1,0 +1,123 @@
+
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 100
+class graph1{
+    public:
+    int arr[10][10];
+    int edges;
+    int weight;
+    int cost[10][10];
+    int b[10][10];
+    int dist[10];
+    int vis[10];
+    int from[10];
+    int total;
+    graph1(){
+        for(int i=0;i<10;i++){
+            dist[i]=0;
+            vis[i]=0;
+            from[i]=0;
+            for(int j=0;j<10;j++){
+                arr[i][j]=0;
+                b[i][j]=0;
+                cost[i][j]=0;
+            }
+        }
+    }
+    void readgraph(){
+        cout<<"Enter Number of edges :"<<endl;
+        cin>>edges;
+        for(int i=0;i<edges;i++){
+            int a,b;
+            cout<<"Enter the edge and weight:"<<endl;
+            cin>>a>>b>>weight;
+            arr[a][b]=weight;
+            arr[b][a]=weight;
+            }
+        }
+    void prims(int vertex){
+       for(int i=0;i<10;i++){ 
+           for(int j=0;j<10;j++){
+               if(arr[i][j]==0){
+                   cost[i][j]=MAX;
+               }
+               else{
+                   cost[i][j]=arr[i][j];
+               }
+           }
+       }
+       vis[vertex]=1;
+       dist[vertex]=0;
+       for(int i=(vertex+1);i<edges;i++){
+            dist[i]=cost[vertex][i];
+            from[i]=vertex;
+       }
+       for(int count=0;count<edges-1;count++){
+           int u=minimum(dist,vis);
+           int v=from[u];
+           b[u][v]=cost[u][v];
+           b[v][u]=cost[v][u];
+           vis[u]=1;
+           total=total+cost[u][v];
+           for(int i=0;i<edges;i++){
+               if(vis[i]==0 && dist[i]>cost[u][i]){
+                   from[i]=u;
+                   dist[i]=cost[u][i];
+               }
+           }
+       }
+
+    }
+    int minimum(int dist[],int vis[]){
+        int min=MAX;
+        int minimum;
+        for(int i=0;i<edges;i++){
+            if(dist[i]<min && vis[i]==0){
+                min=dist[i];
+                minimum=i;
+            }
+        }
+        return minimum;
+    }
+    void printgraph(int from[],int cost[10][10]){
+         cout<<"EDGE\tWEIGHT\n";
+         for(int i=0;i<edges;i++){
+            cout<<from[i]<<"-"<<i<<"\t\t"<<cost[i][from[i]]<<"\n";
+            total=total+b[i][front[i]];
+        }
+        for(int i=0;i<edges;i++)
+        {
+            for(int j=0;j<edges;j++){
+                cout<<b[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+    }
+};
+int main() {
+    graph1 g;
+    int ch;
+    int v;
+    int vertex;
+    while(1){
+        cout<<"\nEnter a choice:";
+        cin>>ch;
+        switch(ch){
+            case 1:
+                g.readgraph();
+                break;
+            case 2:
+                cout<<"Enter vertex to call prims :"<<endl;
+                cin>>v;
+                g.prims(v);
+                break;
+            case 3:
+                g.printgraph(g.from,g.cost);
+                break;
+            case 4:
+                exit(1);
+        }
+    }
+    return 0;
+}
