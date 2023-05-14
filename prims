@@ -1,123 +1,144 @@
-
-#include <bits/stdc++.h>
+#include<iostream>
 using namespace std;
-#define MAX 100
-class graph1{
+class Graph
+{
+    int a[10][10],b[10][10];
+    int n,e;
+    int visited[10],from[10],dist[10];
     public:
-    int arr[10][10];
-    int edges;
-    int weight;
-    int cost[10][10];
-    int b[10][10];
-    int dist[10];
-    int vis[10];
-    int from[10];
-    int total;
-    graph1(){
-        for(int i=0;i<10;i++){
-            dist[i]=0;
-            vis[i]=0;
-            from[i]=0;
-            for(int j=0;j<10;j++){
-                arr[i][j]=0;
-                b[i][j]=0;
-                cost[i][j]=0;
-            }
-        }
-    }
-    void readgraph(){
-        cout<<"Enter Number of edges :"<<endl;
-        cin>>edges;
-        for(int i=0;i<edges;i++){
-            int a,b;
-            cout<<"Enter the edge and weight:"<<endl;
-            cin>>a>>b>>weight;
-            arr[a][b]=weight;
-            arr[b][a]=weight;
-            }
-        }
-    void prims(int vertex){
-       for(int i=0;i<10;i++){ 
-           for(int j=0;j<10;j++){
-               if(arr[i][j]==0){
-                   cost[i][j]=MAX;
-               }
-               else{
-                   cost[i][j]=arr[i][j];
-               }
-           }
-       }
-       vis[vertex]=1;
-       dist[vertex]=0;
-       for(int i=(vertex+1);i<edges;i++){
-            dist[i]=cost[vertex][i];
-            from[i]=vertex;
-       }
-       for(int count=0;count<edges-1;count++){
-           int u=minimum(dist,vis);
-           int v=from[u];
-           b[u][v]=cost[u][v];
-           b[v][u]=cost[v][u];
-           vis[u]=1;
-           total=total+cost[u][v];
-           for(int i=0;i<edges;i++){
-               if(vis[i]==0 && dist[i]>cost[u][i]){
-                   from[i]=u;
-                   dist[i]=cost[u][i];
-               }
-           }
-       }
-
-    }
-    int minimum(int dist[],int vis[]){
-        int min=MAX;
-        int minimum;
-        for(int i=0;i<edges;i++){
-            if(dist[i]<min && vis[i]==0){
-                min=dist[i];
-                minimum=i;
-            }
-        }
-        return minimum;
-    }
-    void printgraph(int from[],int cost[10][10]){
-         cout<<"EDGE\tWEIGHT\n";
-         for(int i=0;i<edges;i++){
-            cout<<from[i]<<"-"<<i<<"\t\t"<<cost[i][from[i]]<<"\n";
-            total=total+b[i][front[i]];
-        }
-        for(int i=0;i<edges;i++)
+   
+    Graph(int n)
+    {
+        for(int i=0;i<n;i++)
         {
-            for(int j=0;j<edges;j++){
+            visited[i]=0;
+        }
+        for(int i=0;i<n;i++)
+        {
+            dist[i]=100;
+        }
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                b[i][j]=0;
+            }
+        }
+    }
+    void input(int n)
+    {  
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                cout<<"Enter Office "<<i+1<<" to Office "<<j+1<<" cost : ";
+                cin>>a[i][j];
+            }
+        }
+        cout<<"\nInput Matrix:"<<endl;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                cout<<a[i][j]<<" ";
+            }
+            cout<<endl;
+           
+        }
+    }
+    void display(int n)
+    {
+        cout<<"\nOutput matrix: "<<endl;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
                 cout<<b[i][j]<<" ";
             }
             cout<<endl;
+
         }
+    }
+   
+    void Prims(int n)
+    {
+        int u,v,Sum;
+        Sum=0;
+       
+        int cost[10][10];
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(a[i][j]==0)
+                {
+                    cost[i][j]=100;
+                }
+                else
+                {
+                    cost[i][j]=a[i][j];
+                }
+            }
+        }
+        visited[0]=1;
+
+        for(int i=1;i<n;i++)
+        {
+            dist[i]=cost[0][i];
+            from[i]=0;
+        }
+       
+
+        e=n-1;
+        while(e>=0)
+        {
+            int mindist=100;
+            for(int i=1;i<n;i++)
+            {
+                if(dist[i]<mindist && visited[i]==0)
+                {
+                    mindist=dist[i];
+                    v=i;
+                }
+            }
+
+            u=from[v];
+            b[u][v]=cost[u][v];
+            b[v][u]=cost[v][u];
+
+            Sum=Sum+cost[u][v];
+            e--;
+            visited[v]=1;
+
+            for(int i=1;i<n;i++)
+            {
+                if(dist[i]>cost[v][i] && visited[i]==0)
+                {
+                    dist[i]=cost[v][i];
+                    from[i]=v;
+                }
+            }
+
+        }
+        cout<<"Minimum Cost = "<<Sum<<endl;
     }
 };
-int main() {
-    graph1 g;
-    int ch;
-    int v;
-    int vertex;
-    while(1){
-        cout<<"\nEnter a choice:";
-        cin>>ch;
-        switch(ch){
-            case 1:
-                g.readgraph();
-                break;
-            case 2:
-                cout<<"Enter vertex to call prims :"<<endl;
-                cin>>v;
-                g.prims(v);
-                break;
-            case 3:
-                g.printgraph(g.from,g.cost);
-                break;
-            case 4:
-                exit(1);
-        }
-    }
+int main()
+{
+    int n;
+   
+    cout<<"Enter no. of Offices: "<<endl;
+    cin>>n;
+    cout<<"\nEnter 0 if there is no connection between offices."<<endl;
+   
+    Graph g(n);
+   
+    g.input(n);
+    g.Prims(n);
+    g.display(n);
+   
     return 0;
-}
+} 
+
+
+
