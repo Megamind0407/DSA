@@ -1,0 +1,56 @@
+#include<fstream>
+#include<iostream>
+using namespace std;
+class student{
+    public:
+    int roll_no;
+    string name;
+    void getdata(){
+        
+        cout<<"Enter name :";
+        cin>>name;
+        cout<<"Enter roll no :";
+        cin>>roll_no;
+    }
+    void printdata(){
+        cout<<"Name :"<<name<<endl;
+        cout<<"Roll No :"<<roll_no<<endl;
+    }
+};
+int main()
+{
+    fstream f;
+    int n;
+    int key;
+    bool flag=false;
+    cout<<"Enter no. of students :";
+    cin>>n;
+    student s[n];
+    f.open("sample.txt",ios::in|ios::out);
+    for(int i=0;i<n;i++){
+    s[i].getdata();
+    f.write((char*)&s[i],sizeof(s[i]));
+    }
+    f.seekg(0);
+    for(int i=0;i<n;i++){
+    f.read((char*)&s[i],sizeof(s[i]));
+    s[i].printdata();
+    }
+    f.seekg(0);
+    cout<<"Enter roll no to search :";
+    cin>>key;
+    for(int i=0;i<n;i++){
+    f.read((char*)&s[i],sizeof(s[i]));
+    if(s[i].roll_no==key){
+        flag=true;
+    }
+    }
+    if(flag){
+        cout<<"Data found";
+    }
+    else{
+        cout<<"Data not found";
+    }
+    f.close();
+    return 0;  
+}
